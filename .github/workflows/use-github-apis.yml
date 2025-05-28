@@ -26,20 +26,19 @@ jobs:
               labels: ["training"]
             })
             console.log(result)
-            
-        - uses: actions/github-script@v6
-          id: close-issue
-          with:
-            github-token: ${{secrets.GITHUB_TOKEN}}
-            script: |
-              const result = await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: ${{fromJSON(steps.create-issue.outputs.result).number}},
-                state: 'closed'
-              })            
-              console.log(result)
-                  return result.data
+                return result.data
+      - uses: actions/github-script@v6
+        id: close-issue
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const result = await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{fromJSON(steps.create-issue.outputs.result).number}},
+              state: 'closed'
+            })            
+            console.log(result)
 
       - name: Displays create issue result
         run: echo "${{toJSON(steps.create-issue.outputs.result)}}"
